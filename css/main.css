@@ -1,0 +1,44 @@
+body {
+    margin: 0;
+    padding: 0;
+    letter-spacing: 20%;
+    font-family: 'Noto Sans CJK TC', Arial, Helvetica, sans-serif;
+    color: #51A8BC;
+    background-color: #FFFAF4;
+}
+
+h1 {
+    font-size: 24px;
+}
+
+h2 {
+    font-size: 20px;
+}
+
+h3 {
+    font-size: 16px;
+}
+
+h4 {
+    font-size: 14px;
+}
+
+h5 {
+    font-size: 12px;
+}
+
+.nav-link {
+    color: #51A8BC !important;
+}
+
+.active {
+    color: #F9B471 !important;
+}
+
+.nav-link:hover {
+    color: #F9B471 !important;
+}
+
+.disabled {
+    color: #E2E1DD !important;
+}

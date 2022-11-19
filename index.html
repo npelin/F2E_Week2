@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" loadingContent="IE=edge">
+    <meta name="viewport" loadingContent="width=device-width, initial-scale=1.0">
+    <title>week2</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link href="./css/main.css" rel="stylesheet">
+    <style>
+        .dialog {
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            position: fixed;
+            top: 0;
+            padding: 12vh 25vw 12vh 25vw;
+        }
+
+        .dialog div {
+            margin: 0 auto;
+        }
+
+        .dialog .SignInZone {
+            width: 100%;
+            height: auto;
+            margin: 0 auto;
+            background-color: #fff;
+            max-width: 830px;
+            max-height: 600px;
+            min-height: 300px;
+            min-width: 600px;
+            border-radius: 2em;
+            padding-bottom: 12px;
+        }
+
+        .headerbar {
+            width: 100%;
+            height: 60px;
+        }
+
+        .footbar {
+            width: 100%;
+            height: 100px;
+        }
+
+        .navbar {
+            background-color: #FFFAF4 !important;
+        }
+
+        .header {
+            font-size: 16px;
+        }
+
+        .loadingContent {
+            position: relative;
+        }
+
+        .loadingContent img {
+            width: 100%;
+        }
+
+        .loadingContent .loadingImg1 {
+            position: absolute;
+            top: 23%;
+            right: 15vw;
+            width: 20vw;
+        }
+
+        .loadingContent .loadingText {
+            position: absolute;
+            top: 38%;
+            right: 15vw;
+            width: 20vw;
+        }
+
+        .loadingContent .loadingBtn {
+            position: absolute;
+            bottom: 30%;
+            right: 15vw;
+            width: 20vw;
+            height: 100px;
+            color: #000;
+            background-color: #FFFAF4;
+            text-align: center;
+            line-height: 100px;
+            box-shadow: 0 2px 0 0 #000000;
+        }
+
+        .loadingContent .loadingBtn:hover {
+            background-color: #F9B471;
+            color: #fff;
+        }
+
+        .loadingLogin {
+            position: relative;
+            width: 830px;
+            height: 650px;
+            border: 1px solid #000;
+            border-radius: 2em;
+        }
+
+        .uploadContent {
+            background-color: #EEEDE8;
+            height: 100%;
+            padding: 30px 0 30px 0;
+        }
+
+        .footbar .btn {
+            border-radius: 1em;
+            background-color: #fff;
+            color: #51A8BC;
+        }
+
+        .footbar .btn:hover,
+        .footer .btn.active {
+            background-color: #51A8BC;
+            color: #fff;
+        }
+
+        .page2Tab {
+            width: 100%;
+            height: 60px;
+            max-width: 1440px;
+            background-color: #FFFAF4;
+            border-top-left-radius: 1em;
+            border-top-right-radius: 1em;
+            margin: 0 auto;
+        }
+
+        .page2Tab div {
+            line-height: 60px;
+        }
+
+        .page2Tab div.active {
+            background-color: #fff;
+            border-top-left-radius: 1em;
+            border-top-right-radius: 1em;
+        }
+
+        .page2Tab div:nth-child(1).active {
+            box-shadow: 2px 0 #ccc;
+        }
+
+        .page2Tab div:nth-child(2).active {
+            box-shadow: -2px 0 #ccc;
+        }
+
+        .page2Content {
+            width: 100%;
+            height: 100vh;
+            max-width: 1440px;
+            background-color: #fff;
+            border-bottom-left-radius: 1em;
+            border-bottom-right-radius: 1em;
+            max-height: 800px;
+            margin: 0 auto;
+            padding-top: 50px;
+            padding-bottom: 50px;
+        }
+
+        .page2UploadBlock {
+            border: 1px dashed #000;
+            width: calc(100% - 100px);
+            height: 100%;
+            margin: 0 auto;
+            border-radius: 1em;
+            text-align: center;
+            padding-top: 8em;
+        }
+
+        .page2UploadHistory {
+            width: calc(100% - 100px);
+            height: 100%;
+            margin: 0 auto;
+        }
+
+        .page2SearchBar {
+            border: 1px solid #000;
+            width: 100%;
+            height: 50px;
+            border-radius: 2em;
+        }
+
+        .page2SearchBar input {
+            margin-left: 2em;
+            border: none;
+            width: 80%;
+        }
+
+        .page2SearchBar img {
+            margin: 0.8em 1em 0 0;
+            width: 24px;
+            height: 24px;
+        }
+
+        .page2Content .list {
+            margin: 25px 0 0 0;
+            color: #A5A39C;
+        }
+
+        .page2Content .list .line {
+            border-radius: 25px;
+            display: flex;
+            height: 60px;
+            line-height: 60px;
+            padding: 0 10px;
+        }
+
+        .page2Content .list .line:hover {
+            background-color: #EEEDE8 !important;
+        }
+
+        .page2Content .list .line.active {
+            background-color: #FFFAF4;
+            color: #A5A39C !important;
+        }
+
+        .page2Content .list .lineHeader:hover {
+            background-color: inherit !important;
+        }
+
+        .page2Content .list .line div:nth-child(1) {
+            width: 50%;
+        }
+
+        .page2Content .list .line div:nth-child(2) {
+            width: 25%;
+        }
+
+        .page2Content .list .line div:nth-child(3) {
+            width: 25%;
+        }
+
+        .page2Content .page2Tips {
+            width: 100%;
+        }
+
+        .page2Content .page2Tips hr {
+            width: 48%;
+            display: inline-block;
+            margin: 0 0 0.5em 0;
+        }
+
+        .page2Content .page2Tips div {
+            width: 3%;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .page3 {
+            width: 100%;
+            min-height: 920px;
+        }
+
+        .page3 .page3Main {
+            width: 100%;
+            min-height: 920px;
+        }
+
+        .page3 .page3Main .action {
+            width: 400px;
+            height: auto;
+            background-color: #fff;
+            color: #A5A39C;
+        }
+
+        .page3 .page3Main .action .page3Header,
+        .page3 .page3Main .action .page3Header2 {
+            padding: 25px 37px 0 25px;
+        }
+
+        .page3 .page3Main .action .page3FileName {
+            padding: 25px 37px 0 25px;
+        }
+
+        .page3 .page3Main .action .page3Sign,
+        .page3 .page3Main .action .page3Upload {
+            border: 1px dashed #A5A39C;
+            margin: 25px 37px;
+            line-height: 60px;
+            text-align: center;
+        }
+
+        .page3 .page3Main .pdfView {
+            width: calc(100% - 400px);
+            height: 100%;
+            min-height: 920px;
+            background-color: #EEEDE8;
+        }
+
+        .page3 .page3Main .pdfView .showPdf {
+            margin: 0 auto;
+            margin-top: 30px;
+            margin-left: 12%;
+            width: 76%;
+            background-color: #fff;
+            height: 100%;
+            min-height: 920px;
+            max-height: 920px;
+            overflow-y: auto;
+        }
+
+        .SignInZone .SignInZoneCanvas {
+            width:  500px;
+            height: 250px;
+            margin: 0 0 0 10%;
+            border: 1px dashed #000;
+        }
+
+        .SignInZone .SignInZoneHeader {
+            height: 60px;
+            width: 100%;
+            text-align: center;
+            line-height: 60px;
+            color: #A5A39C;
+            display: block;
+        }
+
+        .SignInMenu div {
+            line-height: 60px;
+        }
+
+        .SignInZone .btn {
+            border-radius: 1em;
+            background-color: #FFFAF4;
+            color: #51A8BC;
+            width: 180px;
+            height: 60px;
+            font-size: 20px;
+            padding: 0;
+        }
+
+        .SignInZone .btn:hover {
+            color: #F9B471;
+        }
+
+        @media screen and (min-width: 1024px) {
+
+            .headerbar,
+            .page2Tab {
+                width: 100%;
+                max-width: 1440px;
+                margin: 0 auto;
+            }
+
+            .footbar {
+                width: 100%;
+                max-width: 1440px;
+                margin: 0 auto;
+            }
+        }
+
+        @media screen and (max-width: 1440px) {
+            .page2 {
+                width: 100%;
+            }
+
+            .page3 .page3Main .action {
+                width: 25%;
+            }
+
+            .page3 .page3Main .pdfView {
+                width: 75%;
+            }
+        }
+
+        @media screen and (max-width: 1024px) {
+            .loadingContent .loadingImg1 {
+                right: 22vw;
+            }
+
+            .loadingContent .loadingText {
+                position: absolute;
+                top: 38%;
+                right: 22vw;
+                width: 20vw;
+            }
+
+            .loadingContent .loadingBtn {
+                bottom: 28%;
+                right: 22vw;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .loadingContent .loadingImg1 {
+                top: 18%;
+                left: calc(50% - 30vw);
+                width: 60vw;
+            }
+
+            .loadingContent .loadingText {
+                left: calc(50% - 30vw);
+                top: 30%;
+                width: 60vw;
+                font-size: 24px;
+            }
+
+            .loadingContent .loadingBtn {
+                right: 17%;
+                bottom: 2%;
+                width: 66%;
+            }
+
+            .uploadContent {
+                padding: 15px 0 15px 0;
+            }
+
+            .footbar {
+                height: 60px;
+            }
+
+            .page2Content {
+                font-size: small;
+            }
+
+            .page3 {
+                height: auto;
+            }
+
+            .page3 .page3Main .action {
+                width: 100%;
+                height: auto;
+            }
+
+            .page3 .page3Main .action div,
+            .page3 .action hr {
+                display: none;
+            }
+
+            .page3 .page3Main .action .page3FileName {
+                display: block;
+                padding-bottom: 25px;
+            }
+
+            .page3 .page3Main .pdfView {
+                width: 100%;
+                box-shadow: 0px -6px #ccc;
+                padding-bottom: 25px;
+            }
+        }
+    </style>
+</head>
+</head>
+
+<body>
+    <div class="headerbar">
+        <nav class="navbar navbar-expand-lg navbar-expand-md navbar-expand-sm bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand toPage1" href="#"><img src="./img/LOGO2.png" height="28"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse text-right" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="#">邀請其他人簽屬</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link toPage2 signNew" href="#">簽署新文件</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">登入</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="loadingContent pages page1">
+        <img class="loadingBG" src="./img/cover-sm.png">
+        <img class="loadingImg1" src="./img/LOGO1.png">
+        <h1 class="loadingText">線上簽署，方便快速。</h1>
+        <div class="loadingBtn toPage2">簽署新文件</div>
+    </div>
+    <div class="uploadContent pages page2" style="display: none;">
+        <div class="page2Tab row">
+            <div class="col-6 text-center active" data-tab-target=".tab1">上傳新文件</div>
+            <div class="col-6 text-center" data-tab-target=".tab2">選擇以上傳文件</div>
+        </div>
+        <div class="page2Content">
+            <input type="file" id="fileUploader" onchange="handleFiles(this.files)" style="display: none;"
+                accept=".pdf" />
+            <div class="page2UploadBlock tab1" id="page2UploadBlock">
+                <p>點擊此處上傳 或 直接拖曳檔案</p>
+                <p><img src="./img/carbon_document-pdf.png"></p>
+                <p>(限10MB以下PDF檔)</p>
+            </div>
+            <div class="page2UploadHistory tab2" style="display: none;">
+                <div class="page2SearchBar d-flex justify-content-between">
+                    <input type="text" id="historySearch" name="historySearch" />
+                    <img src="./img/Group.png">
+                </div>
+                <div class="list">
+                    <div class="line">
+                        <div>名稱</div>
+                        <div>上傳時間</div>
+                        <div>上次開啟</div>
+                    </div>
+                    <div class="line">
+                        <div>xxxxxFEWFWEFWEFE.pdf</div>
+                        <div>2022/11/11 12:34:56</div>
+                        <div>--</div>
+                    </div>
+                    <div class="line">
+                        <div>xxxxxFEWFWEFWEFE.pdf</div>
+                        <div>2022/11/11 12:34:56</div>
+                        <div>--</div>
+                    </div>
+                    <div class="line">
+                        <div>xxxxxFEWFWEFWEFE.pdf</div>
+                        <div>2022/11/11 12:34:56</div>
+                        <div>--</div>
+                    </div>
+                    <div class="line">
+                        <div>xxxxxFEWFWEFWEFE.pdf</div>
+                        <div>2022/11/11 12:34:56</div>
+                        <div>--</div>
+                    </div>
+                </div>
+                <div class="page2Tips">
+                    <hr />
+                    <div>OR</div>
+                    <hr />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pdfContent pages page3" style="display: none;">
+        <div class="page3Main d-flex flex-wrap justify-content-between">
+            <div class="action">
+                <div class="page3Header fw-bold">文件名稱</div>
+                <div class="page3FileName">文件名稱六角學院2022版活動切結書.pdf</div>
+                <hr>
+                <div class="page3Header2 fw-bold">我的簽名</div>
+                <div class="page3Sign">建立簽名</div>
+                <div class="page3Upload">上傳圖片</div>
+            </div>
+            <div class="pdfView">
+                <div class="showPdf" id="pdfCanvas"></div>
+            </div>
+        </div>
+    </div>
+    <div class="pdfDownload pages page4" style="display: none;">
+        ShowPDF
+    </div>
+    <div class="footbar" style="display: none;">
+        <div class="d-flex justify-content-between">
+            <div class="p-1">
+                上傳文件
+            </div>
+            <div class="p-1">
+            </div>
+            <div class="p-1">
+                <div class="d-inline btn cancelOpen">取消</div>
+                <div class="d-inline btn disabled openFile toPage3">開啟文件</div>
+            </div>
+        </div>
+    </div>
+    <div class="" style="display: none;">
+        <div class="loadingLogin">
+            <div>快速登入</div>
+            <img src="./img/LOGO1.png">
+            <div>請選擇登入點點簽的方式:</div>
+            <div>
+                FB OR G
+            </div>
+            <div>
+                登入後即表示您接受我們的服務條款和隱私政策。
+            </div>
+            <div>取消</div>
+        </div>
+    </div>
+    <div class="dialog" style="display: none;">
+        <div class="SignInZone">
+            <div class="SignInZoneHeader">在框內簽下大名</div>
+            <canvas class="SignInZoneCanvas"></canvas>
+            <div class="SignInMenu d-flex justify-content-between">
+                <div class="SignIncleard">清除</div>
+                <div class="SignInColor">color</div>
+                <div class="btn">取消</div>
+                <div class="btn disabled">簽好了</div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.min.js"
+        integrity="sha512-g4FwCPWM/fZB1Eie86ZwKjOP+yBIxSBM/b2gQAiSVqCgkyvZ0XxYPDEcN2qqaKKEvK6a05+IPL1raO96RrhYDQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.2.4/fabric.min.js"
+        integrity="sha512-HkRNCiaZYxQAkHpLFYI90ObSzL0vaIXL8Xe3bM51vhdYI79RDFMLTAsmVH1xVPREmTlUWexgrQMk+c3RBTsLGw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+        integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="./js/main.js"></script>
+    <script>
+        const SignInCanvasDom = document.querySelector(".SignInZoneCanvas");
+        const clearBtn = document.querySelector(".SignInClear");
+        const ctx = SignInCanvasDom.getContext('2d');
+        ctx.lineWidth = 4;
+        ctx.lineCap = "round";
+        let isPainting = false;
+        function getPainPosition(e) {
+            const canvasSize = SignInCanvasDom.getBoundingClientRect();
+            if (e.type === "mousemove") {
+                return {
+                    x: (e.clientX - canvasSize.left) * 0.6,
+                    y: (e.clientY - canvasSize.top) * 0.6,
+                };
+            } else {
+                return {
+                    x: e.touches[0].clientX - canvasSize.left,
+                    y: e.touches[0].clientY - canvasSize.top,
+                };
+            }
+        }
+        function startPosition(e) {
+            e.preventDefault();
+            isPainting = true;
+        }
+        function finishedPosition() {
+            isPainting = false;
+            ctx.beginPath();
+        }
+        function draw(e) {
+            if (!isPainting) return;
+            const painPosition = getPainPosition(e);
+            ctx.lineTo(painPosition.x, painPosition.y);
+            ctx.stroke();
+        }
+        function reset() {
+            ctx.clearRect(0, 0, SignInCanvasDom.width, SignInCanvasDom.height);
+        }
+        SignInCanvasDom.addEventListener("mousedown", startPosition);
+        SignInCanvasDom.addEventListener("mouseup", finishedPosition);
+        SignInCanvasDom.addEventListener("mouseleave", finishedPosition);
+        SignInCanvasDom.addEventListener("mousemove", draw);
+        SignInCanvasDom.addEventListener("touchstart", startPosition);
+        SignInCanvasDom.addEventListener("touchend", finishedPosition);
+        SignInCanvasDom.addEventListener("touchcancel", finishedPosition);
+        SignInCanvasDom.addEventListener("touchmove", draw);
+        $(document).on('click', ".SignIncleard", function () {
+            reset();
+        });
+        loadingBG();
+        $(document).ready(function () {
+            $(".dialog").show();
+            Page2Fun();
+            var webData = localStorage.getItem('week2_files');
+            if (webData != null) {
+                page3Files = JSON.parse(webData);
+            }
+            ShowFileList();
+        });
+        $(window).resize(function () {
+            loadingBG();
+        });
+        $(document).on('click', '.toPage1', function () {
+            Page1Fun();
+        });
+        $(document).on('click', '.toPage2', function () {
+            Page2Fun();
+        });
+        $(document).on('click', '.toPage3', function () {
+            Page3Fun();
+            console.log('toPage3');
+        });
+        $(document).on('click', '.page2Tab div', function () {
+            $(".page2Tab div").removeClass("active");
+            $(this).addClass("active");
+            $(".page2Content .tab1, .page2Content .tab2").hide();
+            $($(this).data('tab-target')).show();
+            ShowFileList();
+        });
+        $(document).on('click', '.page2 .list .line', function () {
+            $(".page2 .list .line").removeClass("active");
+            $(".openFile").removeClass("disabled");
+            $(this).addClass("active");
+        });
+        $(document).on('click', '.cancelOpen', function () {
+            $(".page2 .list .line").removeClass("active");
+            $(".openFile").addClass("disabled");
+        });
+    </script>
+</body>
+
+</html>
