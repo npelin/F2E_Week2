@@ -582,7 +582,7 @@
             <div class="SignInMenu d-flex justify-content-between">
                 <div class="SignIncleard">清除</div>
                 <div class="SignInColor">color</div>
-                <div class="btn">取消</div>
+                <div class="btn SignInCancer">取消</div>
                 <div class="btn disabled">簽好了</div>
             </div>
         </div>
@@ -689,6 +689,9 @@
         $(document).on('click', '.cancelOpen', function () {
             $(".page2 .list .line").removeClass("active");
             $(".openFile").addClass("disabled");
+        });
+        $(document).on('click', '.SignInCancer', function() {
+           $(".dialog").hide(); 
         });
     </script>
 </body>
