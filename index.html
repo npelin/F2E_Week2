@@ -618,8 +618,8 @@
                 };
             } else {
                 return {
-                    x: e.touches[0].clientX - canvasSize.left,
-                    y: e.touches[0].clientY - canvasSize.top,
+                    x: (e.touches[0].clientX - canvasSize.left)*0.6,
+                    y: (e.touches[0].clientY - canvasSize.top)*0.6,
                 };
             }
         }
