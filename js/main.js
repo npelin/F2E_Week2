@@ -1,4 +1,5 @@
 var page3Files = [];
+var page3Imgs = [];
 var page = 1;
 var PDFJS = window['pdfjs-dist/build/pdf'];
 var BASE64_MARKER = ';base64,';
@@ -114,6 +115,24 @@ function ShowFileList() {
         line.append(NewDiv(item.uploadTime));
         line.append(NewDiv(item.lastOpenTime));
         $(".list").append(line);
+    });
+}
+function ShowImgList(){
+    $(".page3SignImgs > .line").remove();
+    var line = NewDiv('');
+    $.each(page3Imgs, function(index, item){
+        var line = NewDiv('');
+        line.className = "line";
+        line.dataset.id = index;
+        var newImg = document.createElement('img');
+        newImg.src = item;
+        newImg.className = "signImg";
+        line.append(newImg);
+        var delImg = document.createElement('img');
+        delImg.src = "./img/Vector.png";
+        delImg.className = "signImgDelete";
+        line.append(delImg);
+        $(".page3SignImgs").append(line);
     });
 }
 //----------------------------------PDF----------------------------------------

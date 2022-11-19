@@ -276,6 +276,17 @@
             padding: 25px 37px 0 25px;
         }
 
+        .page3 .page3Main .action .page3SignImgs .line{
+            border: 1px dashed #A5A39C;
+            margin: 25px 37px;
+            line-height: 60px;
+            text-align: center;
+        }
+        .page3 .page3Main .action .page3SignImgs .line .signImg{
+            width: 90%;
+            margin: 0 auto;
+        }
+
         .page3 .page3Main .action .page3Sign,
         .page3 .page3Main .action .page3Upload {
             border: 1px dashed #A5A39C;
@@ -537,6 +548,7 @@
                 <div class="page3FileName">文件名稱六角學院2022版活動切結書.pdf</div>
                 <hr>
                 <div class="page3Header2 fw-bold">我的簽名</div>
+                <div class="page3SignImgs"></div>
                 <div class="page3Sign">建立簽名</div>
                 <div class="page3Upload">上傳圖片</div>
             </div>
@@ -583,7 +595,7 @@
                 <div class="SignIncleard">清除</div>
                 <div class="SignInColor">color</div>
                 <div class="btn SignInCancer">取消</div>
-                <div class="btn disabled">簽好了</div>
+                <div class="btn SignInOk disabled">簽好了</div>
             </div>
         </div>
     </div>
@@ -626,6 +638,7 @@
         function startPosition(e) {
             e.preventDefault();
             isPainting = true;
+            $(".SignInOk").removeClass("disabled");
         }
         function finishedPosition() {
             isPainting = false;
@@ -638,6 +651,7 @@
             ctx.stroke();
         }
         function reset() {
+            $(".SignInOk").addClass("disabled");
             ctx.clearRect(0, 0, SignInCanvasDom.width, SignInCanvasDom.height);
         }
         SignInCanvasDom.addEventListener("mousedown", startPosition);
@@ -653,13 +667,14 @@
         });
         loadingBG();
         $(document).ready(function () {
-            $(".dialog").show();
             Page2Fun();
             var webData = localStorage.getItem('week2_files');
-            if (webData != null) {
-                page3Files = JSON.parse(webData);
-            }
+            if (webData != null) page3Files = JSON.parse(webData);
+            
+            webData = localStorage.getItem('imgs'); 
+            if (webData != null) page3Imgs = JSON.parse(webData);
             ShowFileList();
+            ShowImgList();
         });
         $(window).resize(function () {
             loadingBG();
@@ -692,6 +707,24 @@
         });
         $(document).on('click', '.SignInCancer', function() {
            $(".dialog").hide(); 
+        });
+        $(document).on('click', '.page3Sign', function(){
+            reset();
+            $(".SignInOk").addClass("disabled");
+            $(".dialog").show();
+        });
+        $(document).on('click', '.SignInOk', function(){
+            let imgFile =  SignInCanvasDom.toDataURL("image/png");
+            page3Imgs.push(imgFile);
+            localStorage.setItem('imgs', JSON.stringify(page3Imgs));
+            $(".dialog").hide();
+            ShowImgList();
+        });
+        $(document).on('click', '.signImgDelete', function() {
+            let index= $(this).parent().data('id');
+            page3Imgs.splice(index, 1);
+            localStorage.setItem('imgs', JSON.stringify(page3Imgs));
+            ShowImgList();
         });
     </script>
 </body>
