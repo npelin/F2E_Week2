@@ -41,7 +41,8 @@
             height: 60px;
         }
 
-        .footbar {
+        .footbar,
+        .footbar2 {
             width: 100%;
             height: 100px;
         }
@@ -108,14 +109,17 @@
             padding: 30px 0 30px 0;
         }
 
-        .footbar .btn {
+        .footbar .btn,
+        .footbar2 .btn {
             border-radius: 1em;
             background-color: #fff;
             color: #51A8BC;
         }
 
         .footbar .btn:hover,
-        .footer .btn.active {
+        .footer .btn.active,
+        .footbar2 .btn:hover,
+        .footbar2 .btn.active {
             background-color: #51A8BC;
             color: #fff;
         }
@@ -182,6 +186,7 @@
             width: 100%;
             height: 50px;
             border-radius: 2em;
+            display: none !important;
         }
 
         .page2SearchBar input {
@@ -234,22 +239,6 @@
             width: 25%;
         }
 
-        .page2Content .page2Tips {
-            width: 100%;
-        }
-
-        .page2Content .page2Tips hr {
-            width: 48%;
-            display: inline-block;
-            margin: 0 0 0.5em 0;
-        }
-
-        .page2Content .page2Tips div {
-            width: 3%;
-            display: inline-block;
-            text-align: center;
-        }
-
         .page3 {
             width: 100%;
             min-height: 920px;
@@ -276,13 +265,14 @@
             padding: 25px 37px 0 25px;
         }
 
-        .page3 .page3Main .action .page3SignImgs .line{
+        .page3 .page3Main .action .page3SignImgs .line {
             border: 1px dashed #A5A39C;
             margin: 25px 37px;
             line-height: 60px;
             text-align: center;
         }
-        .page3 .page3Main .action .page3SignImgs .line .signImg{
+
+        .page3 .page3Main .action .page3SignImgs .line .signImg {
             width: 90%;
             margin: 0 auto;
         }
@@ -315,7 +305,7 @@
         }
 
         .SignInZone .SignInZoneCanvas {
-            width:  500px;
+            width: 500px;
             height: 250px;
             margin: 0 0 0 10%;
             border: 1px dashed #000;
@@ -346,6 +336,10 @@
 
         .SignInZone .btn:hover {
             color: #F9B471;
+        }
+
+        .lower-canvas {
+            background-color: #51A8BC;
         }
 
         @media screen and (min-width: 1024px) {
@@ -469,13 +463,7 @@
                 <div class="collapse navbar-collapse text-right" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link disabled" href="#">邀請其他人簽屬</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link toPage2 signNew" href="#">簽署新文件</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">登入</a>
                         </li>
                     </ul>
                 </div>
@@ -522,27 +510,14 @@
                         <div>2022/11/11 12:34:56</div>
                         <div>--</div>
                     </div>
-                    <div class="line">
-                        <div>xxxxxFEWFWEFWEFE.pdf</div>
-                        <div>2022/11/11 12:34:56</div>
-                        <div>--</div>
-                    </div>
-                    <div class="line">
-                        <div>xxxxxFEWFWEFWEFE.pdf</div>
-                        <div>2022/11/11 12:34:56</div>
-                        <div>--</div>
-                    </div>
-                </div>
-                <div class="page2Tips">
-                    <hr />
-                    <div>OR</div>
-                    <hr />
                 </div>
             </div>
         </div>
     </div>
     <div class="pdfContent pages page3" style="display: none;">
         <div class="page3Main d-flex flex-wrap justify-content-between">
+            <input type="file" id="imgUploader" onchange="handleFiles(this.files)" style="display: none;"
+                accept=".png" />
             <div class="action">
                 <div class="page3Header fw-bold">文件名稱</div>
                 <div class="page3FileName">文件名稱六角學院2022版活動切結書.pdf</div>
@@ -553,16 +528,15 @@
                 <div class="page3Upload">上傳圖片</div>
             </div>
             <div class="pdfView">
-                <div class="showPdf" id="pdfCanvas"></div>
+                <div class="showPdf" id="pdfCanvas">
+                    <canvas id="canvas" class="showPdfCanvas"></canvas>
+                </div>
             </div>
         </div>
     </div>
-    <div class="pdfDownload pages page4" style="display: none;">
-        ShowPDF
-    </div>
     <div class="footbar" style="display: none;">
         <div class="d-flex justify-content-between">
-            <div class="p-1">
+            <div class="p-1" id="clickBtnUpload">
                 上傳文件
             </div>
             <div class="p-1">
@@ -570,6 +544,15 @@
             <div class="p-1">
                 <div class="d-inline btn cancelOpen">取消</div>
                 <div class="d-inline btn disabled openFile toPage3">開啟文件</div>
+            </div>
+        </div>
+    </div>
+    <div class="footbar2" style="display: none;">
+        <div class="d-flex justify-content-between">
+            <div class="p-1"></div>
+            <div class="p-1">
+                <div class="d-inline btn cancelSign">取消</div>
+                <div class="d-inline btn downloadPDF">下載文件</div>
             </div>
         </div>
     </div>
@@ -601,129 +584,26 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.7.570/pdf.min.js"
-        integrity="sha512-g4FwCPWM/fZB1Eie86ZwKjOP+yBIxSBM/b2gQAiSVqCgkyvZ0XxYPDEcN2qqaKKEvK6a05+IPL1raO96RrhYDQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.2.4/fabric.min.js"
-        integrity="sha512-HkRNCiaZYxQAkHpLFYI90ObSzL0vaIXL8Xe3bM51vhdYI79RDFMLTAsmVH1xVPREmTlUWexgrQMk+c3RBTsLGw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
-        integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://unpkg.com/fabric@latest/dist/fabric.js"></script>
+    <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+    <script src="https://unpkg.com/fabric@latest/dist/fabric.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
         crossorigin="anonymous"></script>
     <script type="text/javascript" src="./js/main.js"></script>
     <script>
-        const SignInCanvasDom = document.querySelector(".SignInZoneCanvas");
-        const clearBtn = document.querySelector(".SignInClear");
-        const ctx = SignInCanvasDom.getContext('2d');
-        ctx.lineWidth = 4;
-        ctx.lineCap = "round";
-        let isPainting = false;
-        function getPainPosition(e) {
-            const canvasSize = SignInCanvasDom.getBoundingClientRect();
-            if (e.type === "mousemove") {
-                return {
-                    x: (e.clientX - canvasSize.left) * 0.6,
-                    y: (e.clientY - canvasSize.top) * 0.6,
-                };
-            } else {
-                return {
-                    x: (e.touches[0].clientX - canvasSize.left)*0.6,
-                    y: (e.touches[0].clientY - canvasSize.top)*0.6,
-                };
-            }
-        }
-        function startPosition(e) {
-            e.preventDefault();
-            isPainting = true;
-            $(".SignInOk").removeClass("disabled");
-        }
-        function finishedPosition() {
-            isPainting = false;
-            ctx.beginPath();
-        }
-        function draw(e) {
-            if (!isPainting) return;
-            const painPosition = getPainPosition(e);
-            ctx.lineTo(painPosition.x, painPosition.y);
-            ctx.stroke();
-        }
-        function reset() {
-            $(".SignInOk").addClass("disabled");
-            ctx.clearRect(0, 0, SignInCanvasDom.width, SignInCanvasDom.height);
-        }
-        SignInCanvasDom.addEventListener("mousedown", startPosition);
-        SignInCanvasDom.addEventListener("mouseup", finishedPosition);
-        SignInCanvasDom.addEventListener("mouseleave", finishedPosition);
-        SignInCanvasDom.addEventListener("mousemove", draw);
-        SignInCanvasDom.addEventListener("touchstart", startPosition);
-        SignInCanvasDom.addEventListener("touchend", finishedPosition);
-        SignInCanvasDom.addEventListener("touchcancel", finishedPosition);
-        SignInCanvasDom.addEventListener("touchmove", draw);
-        $(document).on('click', ".SignIncleard", function () {
-            reset();
-        });
+
         loadingBG();
         $(document).ready(function () {
-            Page2Fun();
             var webData = localStorage.getItem('week2_files');
             if (webData != null) page3Files = JSON.parse(webData);
-            
-            webData = localStorage.getItem('imgs'); 
+
+            webData = localStorage.getItem('imgs');
             if (webData != null) page3Imgs = JSON.parse(webData);
             ShowFileList();
-            ShowImgList();
-        });
-        $(window).resize(function () {
-            loadingBG();
-        });
-        $(document).on('click', '.toPage1', function () {
-            Page1Fun();
-        });
-        $(document).on('click', '.toPage2', function () {
-            Page2Fun();
-        });
-        $(document).on('click', '.toPage3', function () {
-            Page3Fun();
-            console.log('toPage3');
-        });
-        $(document).on('click', '.page2Tab div', function () {
-            $(".page2Tab div").removeClass("active");
-            $(this).addClass("active");
-            $(".page2Content .tab1, .page2Content .tab2").hide();
-            $($(this).data('tab-target')).show();
-            ShowFileList();
-        });
-        $(document).on('click', '.page2 .list .line', function () {
-            $(".page2 .list .line").removeClass("active");
-            $(".openFile").removeClass("disabled");
-            $(this).addClass("active");
-        });
-        $(document).on('click', '.cancelOpen', function () {
-            $(".page2 .list .line").removeClass("active");
-            $(".openFile").addClass("disabled");
-        });
-        $(document).on('click', '.SignInCancer', function() {
-           $(".dialog").hide(); 
-        });
-        $(document).on('click', '.page3Sign', function(){
-            reset();
-            $(".SignInOk").addClass("disabled");
-            $(".dialog").show();
-        });
-        $(document).on('click', '.SignInOk', function(){
-            let imgFile =  SignInCanvasDom.toDataURL("image/png");
-            page3Imgs.push(imgFile);
-            localStorage.setItem('imgs', JSON.stringify(page3Imgs));
-            $(".dialog").hide();
-            ShowImgList();
-        });
-        $(document).on('click', '.signImgDelete', function() {
-            let index= $(this).parent().data('id');
-            page3Imgs.splice(index, 1);
-            localStorage.setItem('imgs', JSON.stringify(page3Imgs));
             ShowImgList();
         });
     </script>
