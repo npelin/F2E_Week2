@@ -18,19 +18,6 @@ img.src = "./img/delFabirc.png";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = "https://mozilla.github.io/pdf.js/build/pdf.worker.js";
 
-
-function loadingBG() {
-
-    if (page == 1) {
-        if ($(window).width() >= 768) {
-            $(".loadingContent .loadingBG").attr('src', './img/cover-lg.png');
-
-        }
-        if ($(window).width() < 768) {
-            $(".loadingContent .loadingBG").attr('src', './img/cover-sm.png');
-        }
-    }
-}
 function Page1Fun() {
     if (page == 1) return;
     page = 1;

@@ -407,6 +407,10 @@
         }
 
         @media screen and (max-width: 768px) {
+            .loadingContent img{
+                max-width: 768px;
+                width: 100%;
+            }
             .loadingContent .loadingImg1 {
                 top: 18%;
                 left: calc(50% - 30vw);
@@ -488,7 +492,13 @@
         </nav>
     </div>
     <div class="loadingContent pages page1">
-        <img class="loadingBG" src="./img/cover-sm.png">
+        <picture>
+            <source media="(max-width: 768px)"
+                    srcset="/img/cover-sm.png" />
+            <source media="(min-width: 769px)"
+                    srcset="/img/cover-lg.png" />
+            <img class="loadingBG" src="/img/cover-sm.png">
+        </picture>
         <img class="loadingImg1" src="./img/LOGO1.png">
         <h1 class="loadingText">線上簽署，方便快速。</h1>
         <div class="loadingBtn toPage2">簽署新文件</div>
@@ -652,7 +662,6 @@
                 reader.readAsDataURL(file);
             }
         }
-        loadingBG();
         $(document).ready(function () {
             var webData = localStorage.getItem('week2_files');
             if (webData != null) page3Files = JSON.parse(webData);
