@@ -20,13 +20,28 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = "https://mozilla.github.io/pdf.js/build
 
 
 function loadingBG() {
+    let height = $(window).height();
+
+    if ($(window).width() >= 768) {
+        height -= 160;
+    }
+    if ($(window).width() < 768) {
+        height -= 120;
+    }
+
     if (page == 1) {
         if ($(window).width() >= 768) {
             $(".loadingContent .loadingBG").attr('src', './img/cover-lg.png');
+
         }
         if ($(window).width() < 768) {
             $(".loadingContent .loadingBG").attr('src', './img/cover-sm.png');
         }
+    }
+    if($(".pages").height() < height){
+
+        $(".pages").css("height", height + "px");
+    console.log("H", height);
     }
 }
 function Page1Fun() {
@@ -475,9 +490,9 @@ $(document).on('click', '.downloadPDF', function () {
         item.backgroundColor = "#BDE8F9";
         item.opacity = 0.75;
     })
-    .then(() =>{
-        canvas.requestRenderAll();
-    });
+        .then(() => {
+            canvas.requestRenderAll();
+        });
 });
 
 $(document).on('click', '.btnDelSignFabric', function () {
