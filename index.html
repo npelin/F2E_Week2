@@ -35,7 +35,8 @@
             border-radius: 2em;
             padding-bottom: 12px;
         }
-        .dialog .SignInColor{
+
+        .dialog .SignInColor {
             display: none;
         }
 
@@ -162,7 +163,7 @@
 
         .page2Content {
             width: 100%;
-            height: 100vh;
+            height: auto;
             max-width: 1440px;
             background-color: #fff;
             border-bottom-left-radius: 1em;
@@ -296,7 +297,8 @@
             line-height: 60px;
             text-align: center;
         }
-        .page3 .page3Main .action .page3Upload{
+
+        .page3 .page3Main .action .page3Upload {
             display: none;
         }
 
@@ -413,10 +415,11 @@
         }
 
         @media screen and (max-width: 768px) {
-            .loadingContent img{
+            .loadingContent img {
                 max-width: 768px;
                 width: 100%;
             }
+
             .loadingContent .loadingImg1 {
                 top: 18%;
                 left: calc(50% - 30vw);
@@ -444,22 +447,28 @@
             .footbar2 {
                 height: 60px;
             }
-            .page2UploadHistory{
+
+            .page2UploadHistory {
                 width: 100%;
             }
+
             .page2Content {
                 font-size: small;
                 height: 100%;
             }
+
             .page2Content .list .line div:nth-child(1) {
                 width: 60%;
             }
+
             .page2Content .list .line div:nth-child(2) {
                 width: 35%;
             }
+
             .page2Content .list .line div:nth-child(3) {
                 display: none;
             }
+
             .page2Content .list .line div:nth-child(4) {
                 width: 5%;
             }
@@ -488,10 +497,11 @@
                 box-shadow: 0px -6px #ccc;
                 padding-bottom: 25px;
             }
-            .dialog{
+
+            .dialog {
                 padding: 0;
             }
-            
+
             .dialog .SignInZone {
                 width: 100%;
                 height: auto;
@@ -504,9 +514,21 @@
                 border-radius: 2em;
                 padding-bottom: 12px;
             }
-            .SignInZone .SignInZoneCanvas{
+
+            .SignInZone .SignInZoneCanvas {
                 width: 80%;
                 height: 80%;
+            }
+
+            .page3 .page3Main .pdfView .showPdf {
+                margin: 0 auto;
+                margin-top: 30px;
+                width: 100%;
+                background-color: #fff;
+                height: 100%;
+                min-height: 920px;
+                max-height: 920px;
+                overflow-y: auto;
             }
         }
     </style>
@@ -534,10 +556,8 @@
     </div>
     <div class="loadingContent pages page1">
         <picture>
-            <source media="(max-width: 768px)"
-                    srcset="./img/cover-sm.png" />
-            <source media="(min-width: 769px)"
-                    srcset="./img/cover-lg.png" />
+            <source media="(max-width: 768px)" srcset="./img/cover-sm.png" />
+            <source media="(min-width: 769px)" srcset="./img/cover-lg.png" />
             <img class="loadingBG" src="./img/cover-sm.png">
         </picture>
         <img class="loadingImg1" src="./img/LOGO1.png">
@@ -618,7 +638,8 @@
     <div class="footbar2" style="display: none;">
         <div class="d-flex justify-content-between">
             <div class="p-1 footMenu">
-                <div class="btn page3Sign2">簽名</div></div>
+                <div class="btn page3Sign2">簽名</div>
+            </div>
             <div class="p-1 footMenu">
                 <div class="d-inline btn cancelSign">取消</div>
                 <div class="d-inline btn downloadPDF">下載文件</div>
