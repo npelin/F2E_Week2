@@ -2,6 +2,7 @@ var page3Files = [];
 var page3Imgs = [];
 var page = 1;
 var isPainting = false;
+var signModel = 1;
 const BASE64_MARKER = ';base64,';
 const Base64Prefix = "data:application/pdf;base64,";
 const MaxStorageSize = 5000000;
@@ -124,6 +125,8 @@ function ShowImgList() {
 
 function getPainPosition(e) {
     const canvasSize = SignInCanvasDom.getBoundingClientRect();
+    if(signModel == 1){
+        
     if (e.type === "mousemove") {
         return {
             x: (e.clientX - canvasSize.left) * 0.6,
@@ -134,6 +137,21 @@ function getPainPosition(e) {
             x: (e.touches[0].clientX - canvasSize.left) * 0.6,
             y: (e.touches[0].clientY - canvasSize.top) * 0.6,
         };
+    }
+    }
+    else{
+        
+    if (e.type === "mousemove") {
+        return {
+            x: (e.clientX - canvasSize.left) * 0.8,
+            y: (e.clientY - canvasSize.top) * 0.8,
+        };
+    } else {
+        return {
+            x: (e.touches[0].clientX - canvasSize.left) * 0.8,
+            y: (e.touches[0].clientY - canvasSize.top) * 0.8,
+        };
+    }
     }
 }
 function startPosition(e) {
@@ -394,16 +412,27 @@ $(document).on('click', ".SignIncleard", function () {
     reset();
 });
 $(document).on('click', '.page3Sign', function () {
+    signModel = 1;
+    reset();
+    $(".SignInOk").addClass("disabled");
+    $(".dialog").show();
+});
+$(document).on('click', '.page3Sign2', function () {
+    signModel= 2;
     reset();
     $(".SignInOk").addClass("disabled");
     $(".dialog").show();
 });
 $(document).on('click', '.SignInOk', function () {
     let imgFile = SignInCanvasDom.toDataURL("image/png");
-    page3Imgs.push(imgFile);
-    localStorage.setItem('imgs', JSON.stringify(page3Imgs));
+    if(signModel==1){
+        page3Imgs.push(imgFile);
+        localStorage.setItem('imgs', JSON.stringify(page3Imgs));
+        ShowImgList();
+    } else {
+        AddImgToPDF(imgFile);
+    }
     $(".dialog").hide();
-    ShowImgList();
 });
 $(document).on('click', '.signImgDelete', function () {
     let index = $(this).parent().data('id');
@@ -415,10 +444,7 @@ $(document).on('click', '.signImgDelete', function () {
 
 
 
-
-
-$(document).on('click', '.signImg', function () {
-    let src = $(this).attr('src');
+function AddImgToPDF(src){
     fabric.Image.fromURL(src, function (image) {
 
         // 設定簽名出現的位置及大小，後續可調整
@@ -429,6 +455,11 @@ $(document).on('click', '.signImg', function () {
         image.opacity = 0.75;
         canvas.add(image);
     });
+}
+
+$(document).on('click', '.signImg', function () {
+    let src = $(this).attr('src');
+    AddImgToPDF(src);
 });
 $(document).on('click', '.cancelSign', function () {
     clearShowPDF();
