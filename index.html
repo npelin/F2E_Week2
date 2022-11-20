@@ -41,12 +41,6 @@
             height: 60px;
         }
 
-        .footbar,
-        .footbar2 {
-            width: 100%;
-            height: 100px;
-        }
-
         .navbar {
             background-color: #FFFAF4 !important;
         }
@@ -107,6 +101,17 @@
             background-color: #EEEDE8;
             height: 100%;
             padding: 30px 0 30px 0;
+        }
+
+        .footbar,
+        .footbar2 {
+            width: 100%;
+            height: 100px;
+        }
+
+        .footbar .footMenu,
+        .footbar2 .footMenu {
+            margin: 20px;
         }
 
         .footbar .btn,
@@ -232,11 +237,15 @@
         }
 
         .page2Content .list .line div:nth-child(2) {
-            width: 25%;
+            width: 22%;
         }
 
         .page2Content .list .line div:nth-child(3) {
-            width: 25%;
+            width: 22%;
+        }
+
+        .page2Content .list .line div:nth-child(4) {
+            width: 6%;
         }
 
         .page3 {
@@ -351,7 +360,8 @@
                 margin: 0 auto;
             }
 
-            .footbar {
+            .footbar,
+            .footbar2 {
                 width: 100%;
                 max-width: 1440px;
                 margin: 0 auto;
@@ -373,6 +383,12 @@
         }
 
         @media screen and (max-width: 1024px) {
+
+            .footbar .footMenu,
+            .footbar2 .footMenu {
+                margin: 20px 10px;
+            }
+
             .loadingContent .loadingImg1 {
                 right: 22vw;
             }
@@ -414,7 +430,8 @@
                 padding: 15px 0 15px 0;
             }
 
-            .footbar, .footbar2 {
+            .footbar,
+            .footbar2 {
                 height: 60px;
             }
 
@@ -487,7 +504,7 @@
             <div class="page2UploadBlock tab1" id="page2UploadBlock">
                 <p>點擊此處上傳 或 直接拖曳檔案</p>
                 <p><img src="./img/carbon_document-pdf.png"></p>
-                <p>(限10MB以下PDF檔)</p>
+                <p>(限5Mb以下PDF檔)</p>
             </div>
             <div class="page2UploadHistory tab2" style="display: none;">
                 <div class="page2SearchBar d-flex justify-content-between">
@@ -499,16 +516,19 @@
                         <div>名稱</div>
                         <div>上傳時間</div>
                         <div>上次開啟</div>
+                        <div>刪除</div>
                     </div>
                     <div class="line">
                         <div>xxxxxFEWFWEFWEFE.pdf</div>
                         <div>2022/11/11 12:34:56</div>
                         <div>--</div>
+                        <div>刪除</div>
                     </div>
                     <div class="line">
                         <div>xxxxxFEWFWEFWEFE.pdf</div>
                         <div>2022/11/11 12:34:56</div>
                         <div>--</div>
+                        <div>刪除</div>
                     </div>
                 </div>
             </div>
@@ -536,13 +556,10 @@
     </div>
     <div class="footbar" style="display: none;">
         <div class="d-flex justify-content-between">
-            <div class="p-1" id="clickBtnUpload">
-                上傳文件
-            </div>
             <div class="p-1">
             </div>
-            <div class="p-1">
-                <div class="d-inline btn cancelOpen">取消</div>
+            <div class="p-1 footMenu">
+                <div class="d-inline btn toPage1">取消</div>
                 <div class="d-inline btn disabled openFile toPage3">開啟文件</div>
             </div>
         </div>
@@ -550,7 +567,7 @@
     <div class="footbar2" style="display: none;">
         <div class="d-flex justify-content-between">
             <div class="p-1"></div>
-            <div class="p-1">
+            <div class="p-1 footMenu">
                 <div class="d-inline btn cancelSign">取消</div>
                 <div class="d-inline btn downloadPDF">下載文件</div>
             </div>
@@ -595,9 +612,49 @@
         crossorigin="anonymous"></script>
     <script type="text/javascript" src="./js/main.js"></script>
     <script>
+        async function handleFiles(files) {
+            var storageSize = page3Files.reduce((sum, item) => sum + item.imgResult.length, 0);
+            let isVaild = true;
+            let fileSize = 0;
+            $.each(files, function (index, item) {
+                if (!fileVaild(item)) {
+                    isVaild = false;
+                    return;
+                }
+                fileSize += item.size;
+            });
+            if (!isVaild) {
+                alert('檔案過大');
+                return;
+            }
+            if (storageSize + fileSize >= MaxStorageSize) {
+                alert('儲存檔案已滿，請先刪除上傳檔案');
+                return;
+            }
+            for (var i = 0; i < files.length; i++) {
+                const file = files[i];
+                const newItem = {
+                    fileName: file.name,
+                    uploadTime: getNow(),
+                    lastOpenTime: "--",
+                    imgResult: null
+                };
+                page3Files.push(newItem);
 
+
+                const reader = new FileReader();
+                reader.onload = (e => {
+                    newItem.imgResult = e.target.result;
+                    localStorage.setItem('week2_files', JSON.stringify(page3Files));
+                    $(".page2Tab div:nth-child(2)").click();
+                    ShowFileList();
+                });
+                reader.readAsDataURL(file);
+            }
+        }
         loadingBG();
         $(document).ready(function () {
+            SwitchToPage2();
             var webData = localStorage.getItem('week2_files');
             if (webData != null) page3Files = JSON.parse(webData);
 

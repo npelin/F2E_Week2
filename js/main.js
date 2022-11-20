@@ -4,7 +4,7 @@ var page = 1;
 var isPainting = false;
 const BASE64_MARKER = ';base64,';
 const Base64Prefix = "data:application/pdf;base64,";
-const fileMaxSize = 10 * 1024 * 1024;//10MB
+const MaxStorageSize = 5000000;
 const imageType = /\*.pdf/;
 const SignInCanvasDom = document.querySelector(".SignInZoneCanvas");
 const clearBtn = document.querySelector(".SignInClear");
@@ -38,10 +38,10 @@ function loadingBG() {
             $(".loadingContent .loadingBG").attr('src', './img/cover-sm.png');
         }
     }
-    if($(".pages").height() < height){
+    if ($(".pages").height() < height) {
 
         $(".pages").css("height", height + "px");
-    console.log("H", height);
+        console.log("H", height);
     }
 }
 function Page1Fun() {
@@ -53,7 +53,7 @@ function Page1Fun() {
     $(".page1").show();
     $(".signNew").show();
 }
-function Page2Fun() {
+function SwitchToPage2() {
     if (page == 2) return;
     page = 2;
     $.each(".pages,.signNew,.footbar2".split(","), function (i, v) {
@@ -61,8 +61,9 @@ function Page2Fun() {
     });
     $(".page2").show();
     $(".footbar").show();
+    $(".toPage3").addClass("disabled");
 }
-function Page3Fun() {
+function SwitchToPage3() {
     if (page == 3) return;
     if ($(".toPage3").hasClass("disabled")) return;
     page = 3;
@@ -87,8 +88,13 @@ function convertDataURIToBinary(dataURI) {
 function Page3Config() {
     let id = $(".line.active").data('id');
     let currentFile = page3Files[id];
+    
     $(".page3FileName").html(currentFile.fileName);
     ShowPage3PDF(currentFile.imgResult);
+
+    currentFile.lastOpenTime = getNow();
+    localStorage.setItem('week2_files', JSON.stringify(page3Files));
+    ShowFileList();
 }
 function NewDiv(msg) {
     let newItem = document.createElement('div');
@@ -102,6 +108,7 @@ function ShowFileList() {
     line.append(NewDiv("名稱"));
     line.append(NewDiv("上傳時間"));
     line.append(NewDiv("上次開啟"));
+    line.append(NewDiv("刪除"));
     $(".list").append(line);
     $.each(page3Files, function (index, item) {
         var line = NewDiv('');
@@ -110,6 +117,12 @@ function ShowFileList() {
         line.append(NewDiv(item.fileName));
         line.append(NewDiv(item.uploadTime));
         line.append(NewDiv(item.lastOpenTime));
+        let delDiv = NewDiv('');
+        delDiv.className = "lineDelFile";
+        let delImg = document.createElement('img');
+        delImg.src = "./img/Vector.png";
+        delDiv.append(delImg);
+        line.append(delDiv);
         $(".list").append(line);
     });
 }
@@ -318,43 +331,25 @@ function drop(e) {
     handleFiles(files);
 }
 function fileVaild(file) {
-    if (file.size > fileMaxSize) return false;
+    if (file.size > MaxStorageSize) return false;
     return true;
 }
 function getNow() {
     let d = new Date();
     return `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}, ${d.getHours()}:${d.getMinutes()}`;
 }
-async function handleFiles(files) {
-    let isVaild = true;
-    $.each(files, function (index, item) {
-        if (!fileVaild(item)) {
-            isVaild = false;
-            return;
-        }
-    });
-    if (!isVaild) {
-        alert('檔案過大');
-        return;
-    }
-    for (var i = 0; i < files.length; i++) {
-        const file = files[i];
-        const newItem = {
-            fileName: file.name,
-            uploadTime: getNow(),
-            lastOpenTime: "--",
-            imgResult: null
-        };
-        page3Files.push(newItem);
 
+function SwitchPage2Tab(obj) {
+    $(".page2Tab div").removeClass("active");
+    $(obj).addClass("active");
 
-        const reader = new FileReader();
-        reader.onload = (e => {
-            newItem.imgResult = e.target.result;
-            localStorage.setItem('week2_files', JSON.stringify(page3Files));
-        });
-        reader.readAsDataURL(file);
-    }
+    $(".page2Content .tab1, .page2Content .tab2").hide();
+    $($(obj).data('tab-target')).show();
+
+    $(".page2 .list .line").removeClass("active");
+    $(".openFile").addClass("disabled");
+
+    ShowFileList();
 }
 
 
@@ -370,9 +365,6 @@ dropbox.addEventListener("dragenter", dragenter, false);
 dropbox.addEventListener("dragover", dragover, false);
 dropbox.addEventListener("drop", drop, false);
 dropbox.addEventListener("click", handleFileSelect, false);
-
-const btnUploadFile = document.getElementById("clickBtnUpload");
-btnUploadFile.addEventListener("click", handleFileSelect, false);
 
 
 SignInCanvasDom.addEventListener("mousedown", startPosition);
@@ -396,23 +388,29 @@ $(document).on('click', '.toPage1', function () {
 });
 $(document).on('click', '.toPage2', function () {
     clearShowPDF();
-    Page2Fun();
+    SwitchToPage2();
 });
 $(document).on('click', '.toPage3', function () {
     clearShowPDF();
-    Page3Fun();
+    SwitchToPage3();
 });
 $(document).on('click', '.page2Tab div', function () {
-    $(".page2Tab div").removeClass("active");
-    $(this).addClass("active");
-    $(".page2Content .tab1, .page2Content .tab2").hide();
-    $($(this).data('tab-target')).show();
-    ShowFileList();
+    let self = this;
+    SwitchPage2Tab(self);
 });
 $(document).on('click', '.page2 .list .line', function () {
     $(".page2 .list .line").removeClass("active");
     $(".openFile").removeClass("disabled");
     $(this).addClass("active");
+});
+$(document).on('click', '.page2 .list .line .lineDelFile', function () {
+    if (confirm("確定是否刪除?")) {
+        let parent = $(this).parent();
+        let id = parent.data('id');
+        page3Files.slice(id, 1);
+        parent.remove();
+        ShowImgList();
+    }
 });
 $(document).on('click', '.cancelOpen', function () {
     $(".page2 .list .line").removeClass("active");
@@ -463,7 +461,7 @@ $(document).on('click', '.signImg', function () {
 });
 $(document).on('click', '.cancelSign', function () {
     clearShowPDF();
-    Page2Fun();
+    SwitchToPage2();
 })
 
 $(document).on('click', '.downloadPDF', function () {
