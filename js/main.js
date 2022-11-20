@@ -63,7 +63,7 @@ function convertDataURIToBinary(dataURI) {
 function Page3Config() {
     let id = $(".line.active").data('id');
     let currentFile = page3Files[id];
-    
+
     $(".page3FileName").html(currentFile.fileName);
     ShowPage3PDF(currentFile.imgResult);
 
@@ -125,33 +125,33 @@ function ShowImgList() {
 
 function getPainPosition(e) {
     const canvasSize = SignInCanvasDom.getBoundingClientRect();
-    if(signModel == 1){
-        
-    if (e.type === "mousemove") {
-        return {
-            x: (e.clientX - canvasSize.left) * 0.6,
-            y: (e.clientY - canvasSize.top) * 0.6,
-        };
-    } else {
-        return {
-            x: (e.touches[0].clientX - canvasSize.left) * 0.6,
-            y: (e.touches[0].clientY - canvasSize.top) * 0.6,
-        };
+    if (signModel == 1) {
+
+        if (e.type === "mousemove") {
+            return {
+                x: (e.clientX - canvasSize.left) * 0.6,
+                y: (e.clientY - canvasSize.top) * 0.6,
+            };
+        } else {
+            return {
+                x: (e.touches[0].clientX - canvasSize.left),
+                y: (e.touches[0].clientY - canvasSize.top),
+            };
+        }
     }
-    }
-    else{
-        
-    if (e.type === "mousemove") {
-        return {
-            x: (e.clientX - canvasSize.left) * 0.8,
-            y: (e.clientY - canvasSize.top) * 0.8,
-        };
-    } else {
-        return {
-            x: (e.touches[0].clientX - canvasSize.left) * 0.8,
-            y: (e.touches[0].clientY - canvasSize.top) * 0.8,
-        };
-    }
+    else {
+
+        if (e.type === "mousemove") {
+            return {
+                x: (e.clientX - canvasSize.left) * 0.8,
+                y: (e.clientY - canvasSize.top) * 0.8,
+            };
+        } else {
+            return {
+                x: (e.touches[0].clientX - canvasSize.left),
+                y: (e.touches[0].clientY - canvasSize.top),
+            };
+        }
     }
 }
 function startPosition(e) {
@@ -418,14 +418,14 @@ $(document).on('click', '.page3Sign', function () {
     $(".dialog").show();
 });
 $(document).on('click', '.page3Sign2', function () {
-    signModel= 2;
+    signModel = 2;
     reset();
     $(".SignInOk").addClass("disabled");
     $(".dialog").show();
 });
 $(document).on('click', '.SignInOk', function () {
     let imgFile = SignInCanvasDom.toDataURL("image/png");
-    if(signModel==1){
+    if (signModel == 1) {
         page3Imgs.push(imgFile);
         localStorage.setItem('imgs', JSON.stringify(page3Imgs));
         ShowImgList();
@@ -444,7 +444,7 @@ $(document).on('click', '.signImgDelete', function () {
 
 
 
-function AddImgToPDF(src){
+function AddImgToPDF(src) {
     fabric.Image.fromURL(src, function (image) {
 
         // 設定簽名出現的位置及大小，後續可調整
