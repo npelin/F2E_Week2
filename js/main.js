@@ -353,9 +353,6 @@ SignInCanvasDom.addEventListener("touchmove", draw);
 
 
 
-$(window).resize(function () {
-    loadingBG();
-});
 $(document).on('click', '.toPage1', function () {
     clearShowPDF();
     Page1Fun();
